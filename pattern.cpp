@@ -93,7 +93,81 @@ int main()
     // }
 
     // 7. print a spiral (leetcode)
+    class Solution
+    {
+    public:
+        vector<int> spirallyTraverse(vector<vector<int>> &mat)
+        {
+            int n = mat.size();
+            int m = mat[0].size();
+            vector<int> ans;
+            // code here
+            int lbound = 0, rbound = m - 1, tbound = 0, bbound = n - 1;
+            while (lbound <= rbound && tbound <= bbound)
+            {
+                int ptr = lbound;
+                while (ptr <= rbound)
+                {
+                    ans.push_back(mat[tbound][ptr]);
+                    ptr++;
+                }
+                tbound++;
+                ptr = tbound;
+                while (ptr <= bbound)
+                {
+                    ans.push_back(mat[ptr][rbound]);
+                    ptr++;
+                }
+                rbound--;
+                ptr = rbound;
+                while (ptr >= lbound && tbound <= bbound)
+                {
+                    ans.push_back(mat[bbound][ptr]);
+                    ptr--;
+                }
+                bbound--;
+                ptr = bbound;
+                while (ptr >= tbound && lbound <= rbound)
+                {
+                    ans.push_back(mat[ptr][lbound]);
+                    ptr--;
+                }
+                lbound++;
+            }
+            return ans;
+        }
+    };
     // 8. print pascals triangle
+    //     1
+    //    1 1
+    //   1 2 1
+    //  1 3 3 1
+    // 1 4 6 4 1
+    // 1
+    // 1 1
+    // 1 2 1
+    // 1 3 3 1
+    // 1 4 6 4 1
+    // n = 4;
+    // int pascals[n + 1][n + 1];
+    // for (int i = 0; i <= n; i++)
+    // {
+    //     for (int j = 0; j < n - i; j++)
+    //         cout << " ";
+    //     for (int j = 0; j <= i; j++)
+    //     {
+    //         if (j == 0 || j == i)
+    //         {
+    //             pascals[i][j] = 1;
+    //             cout << pascals[i][j] << " ";
+    //             continue;
+    //         }
+    //         pascals[i][j] = pascals[i - 1][j] + pascals[i - 1][j - 1];
+
+    //         cout << pascals[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
     // 9. print xor pyramid
     //    4
     //   2 6
@@ -103,27 +177,27 @@ int main()
     // 2 6
     // 3 1 7
     // 1 2 3 4
-    n = 4;
-    int arr[n][n];
-    arr[0][0] = 1;
-    arr[0][1] = 2;
-    arr[0][2] = 3;
-    arr[0][3] = 4;
+    // n = 4;
+    // int arr[n][n];
+    // arr[0][0] = 1;
+    // arr[0][1] = 2;
+    // arr[0][2] = 3;
+    // arr[0][3] = 4;
 
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 0; j <= n - i - 1; j++)
-        {
-            arr[i][j] = arr[i - 1][j] ^ arr[i - 1][j + 1];
-        }
-    }
+    // for (int i = 1; i < n; i++)
+    // {
+    //     for (int j = 0; j <= n - i - 1; j++)
+    //     {
+    //         arr[i][j] = arr[i - 1][j] ^ arr[i - 1][j + 1];
+    //     }
+    // }
 
-    for (int i = n - 1; i >= 0; i--)
-    {
-        for (int k = 0; k <= i; k++)
-            cout << " ";
-        for (int j = 0; j <= n - i - 1; j++)
-            cout << arr[i][j] << " ";
-        cout << endl;
-    }
+    // for (int i = n - 1; i >= 0; i--)
+    // {
+    //     for (int k = 0; k <= i; k++)
+    //         cout << " ";
+    //     for (int j = 0; j <= n - i - 1; j++)
+    //         cout << arr[i][j] << " ";
+    //     cout << endl;
+    // }
 }
