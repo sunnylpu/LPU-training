@@ -92,20 +92,38 @@ int main()
     //     cout << endl;
     // }
 
-    //  7. print a spiral (leetcode)
+    // 7. print a spiral (leetcode)
     // 8. print pascals triangle
     // 9. print xor pyramid
-
+    //    4
+    //   2 6
+    //  3 1 7
+    // 1 2 3 4
+    // 4
+    // 2 6
+    // 3 1 7
+    // 1 2 3 4
     n = 4;
-    vector<int> v({2, 3, 5, 4});
-    vector<vector<int>> ans;
-    for (int i = 0; i < n; i++)
+    int arr[n][n];
+    arr[0][0] = 1;
+    arr[0][1] = 2;
+    arr[0][2] = 3;
+    arr[0][3] = 4;
+
+    for (int i = 1; i < n; i++)
     {
-        for (int j = 0; j < n - i - 1; j++)
+        for (int j = 0; j <= n - i - 1; j++)
         {
-            cout << (v[j] ^ v[j + 1]);
-            v[j] = v[j] ^ v[j + 1];
+            arr[i][j] = arr[i - 1][j] ^ arr[i - 1][j + 1];
         }
+    }
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int k = 0; k <= i; k++)
+            cout << " ";
+        for (int j = 0; j <= n - i - 1; j++)
+            cout << arr[i][j] << " ";
         cout << endl;
     }
 }
