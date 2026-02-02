@@ -116,3 +116,64 @@ public:
         return lo;
     }
 };
+
+// kth missing value
+class Solution
+{
+public:
+    int missingcount(int mid, vector<int> arr)
+    {
+        return arr[mid] - mid - 1;
+    }
+    int findKthPositive(vector<int> &arr, int k)
+    {
+        if (k < arr[0])
+            return k;
+        int n = arr.size();
+        int lo = 0, hi = n;
+        while (lo < hi)
+        {
+            int mid = lo + (hi - lo) / 2;
+            if (missingcount(mid, arr) >= k)
+                hi = mid;
+            else
+                lo = mid + 1;
+        }
+        int rem = k - missingcount(lo - 1, arr);
+        return arr[lo - 1] + rem;
+    }
+};
+// ship capacity
+class Solution
+{
+public:
+    bool helper(int capacity, vector<int> weights, int days)
+    {
+        int curr = 0, total_days = 1;
+        for (auto x : weights)
+        {
+            if (x + curr > capacity)
+            {
+                total_days++;
+                curr = 0;
+            }
+            curr += x;
+        }
+        return total_days <= days;
+    }
+    int shipWithinDays(vector<int> &weights, int days)
+    {
+        int n = weights.size();
+        int lo = *max_element(weights.begin(), weights.end());
+        int hi = accumulate(weights.begin(), weights.end(), 0) + 1;
+        while (lo < hi)
+        {
+            int mid = lo + (hi - lo) / 2;
+            if (helper(mid, weights, days))
+                hi = mid;
+            else
+                lo = mid + 1;
+        }
+        return lo;
+    }
+};
