@@ -1,0 +1,10 @@
+topics:
+    linked list
+    slow and fast pointer
+
+questions:
+    reverse a list: recursive and iterative
+    add two numbers
+    detect linked list cycle
+    merge 2 lists
+    merge k sorted lists

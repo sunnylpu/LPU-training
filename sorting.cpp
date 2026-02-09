@@ -7,12 +7,10 @@ void heapify(vi &arr, int p, int heapSize)
 {
     int l = 2 * p + 1;
     int r = 2 * p + 2;
-    if (l > heapSize || r > heapSize)
-        return;
     int largest = p;
-    if (arr[l] > arr[largest])
+    if (l < heapSize && arr[l] > arr[largest])
         largest = l;
-    if (arr[r] > arr[largest])
+    if (r < heapSize && arr[r] > arr[largest])
         largest = r;
     if (p != largest)
     {
@@ -24,15 +22,15 @@ void heapSort(vi &arr)
 {
     // make heap
     int n = arr.size();
-    for (int i = n - 1; i >= 0; i--)
+    for (int i = n / 2 - 1; i >= 0; i--)
     {
         heapify(arr, i, n);
     }
     // remove largest element
-    for (int i = n - 1; i >= 0; i--)
+    for (int size = n; size >= 1; size--)
     {
-        swap(arr[0], arr[i]);
-        heapify(arr, 0, i - 1);
+        swap(arr[0], arr[size - 1]);
+        heapify(arr, 0, size - 1);
     }
 }
 void heapifypairs(vpi &arr, int p, int heapSize)
@@ -82,12 +80,12 @@ int main()
         cout << x << " ";
 
     cout << endl;
-    heapSortPair(arr);
-    for (auto [v, i] : arr)
-    {
-        cout << v << "-" << i << " ";
-    }
-    cout << endl;
+    // heapSortPair(arr);
+    // for (auto [v, i] : arr)
+    // {
+    //     cout << v << "-" << i << " ";
+    // }
+    // cout << endl;
 }
 
 int *merge_array(int *arr1, int *arr2, int n1, int n2)
@@ -161,7 +159,7 @@ public:
     }
 };
 // sort 012s
-class Solution
+class Solution2
 {
 public:
     void sortColors(vector<int> &nums)
@@ -222,7 +220,6 @@ vector<int> merge_vectors(const vector<int> &left, const vector<int> &right, int
 vector<int> merge_sort(const vector<int> &arr, int &ans)
 {
     int n = arr.size();
-
     // Base case: a vector of size 1 is already sorted
     if (n <= 1)
         return arr;
@@ -241,7 +238,7 @@ vector<int> merge_sort(const vector<int> &arr, int &ans)
     return merge_vectors(sorted_left, sorted_right, ans);
 }
 
-class Solution
+class Solution3
 {
     int ans = 0;
 
