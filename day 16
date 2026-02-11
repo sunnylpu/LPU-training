@@ -1,19 +1,16 @@
-topics:
-    recursion
-    base-hypothesis structure
-    Tree: basic representation and theory
+questions:
+    maximum consecutive ones done
+    longest substring without repeatinfg charecters done
 
-questions: 
-    tower of hanoi
-    sorting using recursion
-    factorial
-    gate question
-    nCr
+    group anagrams
+    Sum of all Subarrays
+    longest increasing subsequence(by binary search)
 
-    sum of all nodes
-    depth of a Tree
-    longest path in Tree
-
-
-
-
+    best time to sell stock
+    Longest Repeating Character Replacement
+    Minimum Window Substring
+    k-diff-pairs-in-an-array
+    find-k-th-smallest-pair-distance(hard)
+    
+    sliding window MEX
+    sliding window minimum
