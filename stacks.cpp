@@ -295,3 +295,27 @@ public:
         return stk.empty();
     }
 };
+
+// Count binary substring
+class Solution {
+public:
+    int countBinarySubstrings(string st) {
+        stack<pair<int, int>> s;
+        int ans=0;
+        for(auto x: st){
+            if(!s.empty() && s.top().first==(x-'0')){
+                auto [c,f]=s.top();
+                s.pop();
+                s.push({c, f+1});
+                continue;
+            }
+            s.push({x-'0', 1});
+        }
+        while(s.size()>1){
+            auto [x,f]=s.top();
+            s.pop();
+            ans+=min(f, s.top().second);
+        }
+        return ans;
+    }
+};
