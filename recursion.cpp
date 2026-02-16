@@ -115,3 +115,59 @@ public:
         return res;
     }
 };
+// clumsy factorial
+class Solution
+{
+public:
+    int clumsy(int n)
+    {
+        if (n == 1)
+            return 1;
+        if (n == 2)
+            return 2;
+        return 2 * (n * (n - 1) / (n - 2)) + helper(n);
+    }
+    int helper(int x)
+    {
+        // base case
+        if (x == 0)
+            return 0;
+        if (x == 1)
+            return -1;
+        if (x == 2)
+            return -2;
+        if (x == 3)
+            return -6;
+        return -x * (x - 1) / (x - 2) + x - 3 + helper(x - 4);
+    }
+};
+// tribonacci number
+class Solution
+{
+public:
+    int tribonacci(int n)
+    {
+        if (n == 0)
+            return 0;
+        if (n <= 2)
+            return 1;
+        return (
+            tribonacci(n - 1) +
+            tribonacci(n - 2) +
+            tribonacci(n - 3));
+    }
+};
+class Solution
+{
+public:
+    int nCr(int n, int r)
+    {
+        // code here
+        if (r > n)
+            return 0;
+        r = min(r, n - r);
+        if (r == 0 || r == n)
+            return 1;
+        return (1ll * (n - r + 1) * nCr(n, r - 1)) / r;
+    }
+};
