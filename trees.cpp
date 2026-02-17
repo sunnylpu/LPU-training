@@ -513,3 +513,132 @@ public:
         return p;
     }
 };
+
+// good node count
+
+class Solution
+{
+public:
+    int dfs(TreeNode *root, int maxval)
+    {
+        if (!root)
+            return 0;
+        int ans = 0;
+        maxval = max(maxval, root->val);
+        if (root->val == maxval)
+            ans++;
+        ans += dfs(root->left, maxval);
+        ans += dfs(root->right, maxval);
+        return ans;
+    }
+    int goodNodes(TreeNode *root)
+    {
+        return dfs(root, INT_MIN);
+    }
+};
+// KTH SMALLEST IN bst
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution
+{
+public:
+    map<TreeNode *, int> count;
+    int dfs(TreeNode *root)
+    {
+        if (!root)
+            return 0;
+        count[root] = 1 + dfs(root->left) + dfs(root->right);
+        return count[root];
+    }
+    int kthSmallest(TreeNode *root, int k)
+    {
+        TreeNode *curr = root;
+        dfs(root);
+        while (curr != NULL)
+        {
+            int curr_rank = curr->left == NULL ? 1 : (count[curr->left] + 1);
+            if (curr_rank > k)
+            {
+                // go left
+                curr = curr->left;
+            }
+            else if (curr_rank < k)
+            {
+                // go right
+                curr = curr->right;
+                k -= curr_rank;
+            }
+            else
+            {
+                return curr->val;
+            }
+        }
+    }
+};
+// validate binary tree
+
+class Solution
+{
+public:
+    tuple<bool, int, int> helper(TreeNode *root)
+    {
+        if (!root)
+            return {true, INT_MAX, INT_MIN};
+        auto [lvalid, lmin, lmax] = helper(root->left);
+        auto [rvalid, rmin, rmax] = helper(root->right);
+        if (!lvalid || !rvalid || root->val <= lmax || root->val >= rmin)
+            return {false, INT_MAX, INT_MIN};
+        if (lmin == INT_MAX)
+            lmin = root->val;
+        if (rmax == INT_MIN)
+            rmax = root->val;
+        return {true, lmin, rmax};
+    }
+    bool isValidBST(TreeNode *root)
+    {
+        auto [valid, mn, mx] = helper(root);
+        return valid;
+    }
+};
+// construct Binary tree
+#define vi vector<int>
+class Solution
+{
+public:
+    TreeNode *buildTree(vi &preorder, vi &inorder)
+    {
+        int n = preorder.size();
+        return helper(preorder, inorder, 0, n - 1, 0, n - 1);
+    }
+    TreeNode *helper(vi &P, vi &I, int ps, int pe, int is, int ie)
+    {
+        if (ps > pe)
+            return NULL;
+        TreeNode *root = new TreeNode(P[ps]);
+        if (ps == pe)
+        {
+            return root;
+        }
+        int rootval = P[ps];
+        int rootidx = -1;
+        for (int i = is; i <= pe; i++)
+        {
+            if (I[i] == rootval)
+                rootidx = i;
+        }
+        int count = rootidx - is;
+        root->left = helper(P, I, ps + 1, ps + count, is, is + count - 1);
+        root->right = helper(P, I, ps + count + 1, pe, is + count + 1, ie);
+        return root;
+    }
+};
