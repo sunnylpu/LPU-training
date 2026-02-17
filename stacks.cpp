@@ -297,24 +297,102 @@ public:
 };
 
 // Count binary substring
-class Solution {
+class Solution
+{
 public:
-    int countBinarySubstrings(string st) {
+    int countBinarySubstrings(string st)
+    {
         stack<pair<int, int>> s;
-        int ans=0;
-        for(auto x: st){
-            if(!s.empty() && s.top().first==(x-'0')){
-                auto [c,f]=s.top();
+        int ans = 0;
+        for (auto x : st)
+        {
+            if (!s.empty() && s.top().first == (x - '0'))
+            {
+                auto [c, f] = s.top();
                 s.pop();
-                s.push({c, f+1});
+                s.push({c, f + 1});
                 continue;
             }
-            s.push({x-'0', 1});
+            s.push({x - '0', 1});
         }
-        while(s.size()>1){
-            auto [x,f]=s.top();
+        while (s.size() > 1)
+        {
+            auto [x, f] = s.top();
             s.pop();
-            ans+=min(f, s.top().second);
+            ans += min(f, s.top().second);
+        }
+        return ans;
+    }
+};
+
+// lowest common ancestor of BST
+class Solution
+{
+public:
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+    {
+        if (!root)
+            return root;
+        if (root->val > p->val && root->val > q->val)
+        {
+            return lowestCommonAncestor(root->left, p, q);
+        }
+        if (root->val < p->val && root->val < q->val)
+        {
+            return lowestCommonAncestor(root->right, p, q);
+        }
+        return root;
+    }
+};
+
+// lca binary tree
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution
+{
+public:
+    map<TreeNode *, TreeNode *> parent;
+    void dfs(TreeNode *root, TreeNode *par)
+    {
+        if (!root)
+            return;
+        parent[root] = par;
+        dfs(root->left, root);
+        dfs(root->right, root);
+    }
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+    {
+        vector<TreeNode *> ancestorP;
+        vector<TreeNode *> ancestorQ;
+        dfs(root, NULL);
+        TreeNode *currP = p;
+        while (currP != NULL)
+        {
+            ancestorP.push_back(currP);
+            currP = parent[currP];
+        }
+        TreeNode *currQ = q;
+        while (currQ != NULL)
+        {
+            ancestorQ.push_back(currQ);
+            currQ = parent[currQ];
+        }
+        int i = 0;
+        TreeNode *ans = NULL;
+        int sizeP = ancestorP.size();
+        int sizeQ = ancestorQ.size();
+        while (
+            i < sizeP && i < sizeQ &&
+            ancestorP[sizeP - 1 - i] == ancestorQ[sizeQ - 1 - i])
+        {
+            ans = ancestorP[ancestorP.size() - 1 - i];
+            i++;
         }
         return ans;
     }
