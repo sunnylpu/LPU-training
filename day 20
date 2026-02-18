@@ -1,5 +1,7 @@
 topics:
     Trees questions
+    preorder, inorder and postorder
+    BST
 questions:
     source: neetocode.io
     invert binary tree
