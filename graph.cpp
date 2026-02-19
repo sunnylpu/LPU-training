@@ -176,3 +176,34 @@ public:
         return cnt;
     }
 };
+// path exists
+class Solution
+{
+public:
+    bool dfs(vector<vector<int>> &graph, set<int> &visited, int node, int destination)
+    {
+        if (node == destination)
+            return true;
+        if (visited.find(node) != visited.end())
+            return false;
+        visited.insert(node);
+        for (int nei : graph[node])
+        {
+            if (dfs(graph, visited, nei, destination))
+                return true;
+        }
+        return false;
+    }
+    bool validPath(int n, vector<vector<int>> &edges, int source, int destination)
+    {
+        vector<vector<int>> graph(n, vector<int>());
+        for (auto edge : edges)
+        {
+            int u = edge[0], v = edge[1];
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+        }
+        set<int> visited;
+        return dfs(graph, visited, source, destination);
+    }
+};
