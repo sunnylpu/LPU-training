@@ -185,3 +185,70 @@ public:
         return ans;
     }
 };
+// word break
+class TrieNode
+{
+public:
+    char c;
+    map<char, TrieNode *> children;
+    bool isEnd;
+    int count;
+    TrieNode(char c)
+    {
+        this->c = c;
+        this->count = 0;
+        this->isEnd = false;
+    }
+};
+void add(TrieNode *root, string word)
+{
+    TrieNode *curr = root;
+    root->count++;
+    for (char w : word)
+    {
+        if (curr->children[w] == NULL)
+            curr->children[w] = new TrieNode(w);
+        curr = curr->children[w];
+        curr->count++;
+    }
+    curr->isEnd = true;
+}
+class Solution
+{
+public:
+    map<int, bool> memo;
+    bool helper(TrieNode *root, int idx, string word)
+    {
+        if (idx == word.size())
+            return true;
+        if (memo.find(idx) != memo.end())
+            return memo[idx];
+        TrieNode *curr = root;
+        for (int i = idx; i < word.size(); i++)
+        {
+            if (curr->children[word[i]] == NULL)
+            {
+                memo[idx] = false;
+                return false;
+            }
+            curr = curr->children[word[i]];
+            if (curr->isEnd)
+            {
+                if (helper(root, i + 1, word))
+                {
+                    memo[idx] = true;
+                    return true;
+                }
+            }
+        }
+        memo[idx] = false;
+        return false;
+    }
+    bool wordBreak(string s, vector<string> &wordDict)
+    {
+        TrieNode *root = new TrieNode(' ');
+        for (string word : wordDict)
+            add(root, word);
+        return helper(root, 0, s);
+    }
+};
