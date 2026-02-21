@@ -115,4 +115,73 @@ int main()
     cout << "ap " << trie->startWithCount("ap") << endl;
     cout << "land exists: " << trie->find("land") << endl;
     cout << "apron exists: " << trie->find("apron") << endl;
+    cout << "odd exists: " << trie->find("odd") << endl;
 }
+
+// longest prefix
+
+class TrieNode
+{
+public:
+    char c;
+    map<char, TrieNode *> children;
+    bool isEnd;
+    int count;
+    TrieNode(char c)
+    {
+        this->c = c;
+        this->count = 0;
+        this->isEnd = false;
+    }
+};
+void add(TrieNode *root, string word)
+{
+    TrieNode *curr = root;
+    root->count++;
+    for (char w : word)
+    {
+        if (curr->children[w] == NULL)
+            curr->children[w] = new TrieNode(w);
+        curr = curr->children[w];
+        curr->count++;
+    }
+    curr->isEnd = true;
+}
+class Solution
+{
+public:
+    string longestCommonPrefix(vector<string> &strs)
+    {
+        int mn = 201;
+        int n = strs.size();
+        if (n == 1)
+            return strs[0];
+        TrieNode *root = new TrieNode(' ');
+        TrieNode *curr = root;
+        for (string word : strs)
+        {
+            if (word == "")
+                return "";
+            add(root, word);
+        }
+        string ans = "";
+        bool flag = true;
+        while (flag && curr->children.size() > 0)
+        {
+            for (auto [ch, node] : curr->children)
+            {
+                if (node->count == n)
+                {
+                    curr = node;
+                    ans += curr->c;
+                }
+                else
+                {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
