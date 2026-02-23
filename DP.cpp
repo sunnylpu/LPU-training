@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+// top down / memoisation
 class Solution
 {
 public:
@@ -8,15 +8,15 @@ public:
     int fib(int n)
     {
         if (n <= 1)
-            return n;
-        if (memo.find(n) != memo.end())
-            return memo[n]; // always use find with map
+            return n;                   // base case
+        if (memo.find(n) != memo.end()) // memoised
+            return memo[n];             // always use find with map
         // memo[n]=fib(n-1)+fib(n-2);
         // return memo[n];
-        return memo[n] = fib(n - 1) + fib(n - 2);
+        return memo[n] = fib(n - 1) + fib(n - 2); // recursive step
     }
 };
-
+// bottom up / iterative
 class Solution
 {
 public:
@@ -25,10 +25,15 @@ public:
         if (n <= 1)
             return n;
         vector<int> dp(n + 1, 0);
+        // base case
+        dp[0] = 0;
         dp[1] = 1;
-        // for (int i = n; i >= 2; i--) //wrong loop
+        // for (int i = n; i >= 2; i--) // wrong loop
         for (int i = 2; i <= n; i++)
         {
+            // this works under the assumption that
+            // dp[i-1] and dp[i-2] contain the correct values
+            // reverse loop will give garbage answer
             dp[i] = dp[i - 1] + dp[i - 2];
         }
         return dp[n];
@@ -63,6 +68,46 @@ public:
         for (int i = 2; i <= n; i++)
             memo[i] = memo[i - 1] + memo[i - 2];
         return memo[n];
+    }
+};
+// House robber
+class Solution
+{
+public:
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(2, 0));
+        dp[0][1] = nums[0];
+        for (int i = 1; i < n; i++)
+        {
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1]);
+            dp[i][1] = dp[i - 1][0] + nums[i];
+        }
+        return max(dp[n - 1][0], dp[n - 1][1]);
+    }
+};
+
+// min cost climbing stairs
+class Solution
+{
+public:
+    int rec(int n, vector<int> &cost, vector<int> &dp)
+    {
+        if (n <= 1)
+            return 0;
+        if (dp[n] != -1)
+            return dp[n];
+        dp[n] = min(
+            rec(n - 1, cost, dp) + cost[n - 1],
+            rec(n - 2, cost, dp) + cost[n - 2]);
+        return dp[n];
+    }
+    int minCostClimbingStairs(vector<int> &cost)
+    {
+        int n = cost.size();
+        vector<int> dp(n + 1, -1);
+        return rec(n, cost, dp);
     }
 };
 int main()
