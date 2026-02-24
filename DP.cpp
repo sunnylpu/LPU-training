@@ -110,6 +110,40 @@ public:
         return rec(n, cost, dp);
     }
 };
+// Coin change
+class Solution
+{
+public:
+    vector<int> memo;
+    int helper(int T, vector<int> &coins)
+    {
+        if (T < 0)
+            return INT_MAX;
+        if (T == 0)
+            return 0;
+        if (memo[T] != -1)
+            return memo[T];
+        int ans = INT_MAX;
+        for (int c : coins)
+        {
+            int curr = helper(T - c, coins);
+            if (curr == INT_MAX)
+                continue;
+            ans = min(ans, curr + 1);
+        }
+        memo[T] = ans;
+        return ans;
+    }
+    int coinChange(vector<int> &coins, int T)
+    {
+        memo.resize(T + 1, -1);
+        int ans = helper(T, coins);
+        if (ans == INT_MAX)
+            return -1;
+        return ans;
+    }
+};
+
 int main()
 {
 #ifndef ONLINE_JUDGE
